@@ -5,7 +5,7 @@ int main(int argc, char **args) {
 
     printf("Total number of args: %d\n", argc);
 
-    int length = sizeof(args) / sizeof(args[0]);
+    // int length = sizeof(args) / sizeof(args[0]);
     for (i = 0; i < argc; i++) {
         printf("Arg #%d => %s\n", i+1, args[i]);
     }
