@@ -1,3 +1,6 @@
+/**
+ * source: https://www.w3schools.com/c/c_arrays.php
+ */
 #include <stdio.h>
 
 int main() {

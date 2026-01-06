@@ -1,3 +1,8 @@
+/**
+ * source: https://chatgpt.com/g/g-p-693919539f8881918d2912e5d2a6c48f-learn-c/c/695c8352-034c-8320-9df5-315c273e66cb
+ * context: Modify an array
+ */
+
 #include <stdio.h>
 
 int main() {
