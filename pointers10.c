@@ -1,17 +1,22 @@
 #include <stdio.h>
 
-float updateTemperature(float temp) {
-    return temp + 2.5; // increase temperature
+void showMenu() {
+    printf("\n=== Smart Access System ===\n");
+    printf("1. Add Guest\n");
+    printf("2. Show Guests\n");
+    printf("0. Exit\n");
 }
 
 int main() {
-    float roomTemp = 25.0;    
+    int choice;
 
-    printf("Initial Temperature: %.2f°C\n", roomTemp);
+    while(1) {
+        showMenu();
+        printf("Choose: ");
+        scanf("%d", &choice);
 
-    roomTemp = updateTemperature(roomTemp);
-
-    printf("Updated Temperature: %.2f°C\n", roomTemp);
+        if (choice == 0)
+    }
 
     return 0;
 }
