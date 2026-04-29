@@ -8,10 +8,6 @@
 #define GRID_WIDTH    (SCREEN_WIDTH / GRID_SIZE)
 #define GRID_HEIGHT   (SCREEN_HEIGHT / GRID_SIZE)
 
-//typedef struct {
-//  int x, y;
-//} Vector2;
-
 // game state
 Vector2 snake[100];         // max segments
 int snakeLength = 3;        // initial length

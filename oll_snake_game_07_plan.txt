@@ -1,0 +1,1 @@
+try to add special food that is bigger and more length added to the snake, add poison food that is spawn every 5 food
