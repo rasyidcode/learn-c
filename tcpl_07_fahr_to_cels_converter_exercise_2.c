@@ -1,8 +1,5 @@
 #include <stdio.h>
 
-/* print Fahrenheit-Celsius table
-   for fahr = 0, 20, ..., 300 */
-
 int main(void) {
     float fahr, celsius;
     int lower, upper, step;
@@ -11,10 +8,13 @@ int main(void) {
     upper = 300;    /* upper limit */
     step = 20;      /* step size */
 
+    printf("%10s %10s\n", "Fahrenheit", "Celsius");
+    printf("%10s %10s\n", "==========", "=======");
+
     fahr = lower;
     while (fahr <= upper) {
         celsius = (5.0 / 9.0) * (fahr - 32.0);
-        printf("%3.0f %6.1f\n", fahr, celsius);
+        printf("%10.0f %10.1f\n", fahr, celsius);
         fahr = fahr + step;
     }
 
