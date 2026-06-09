@@ -50,7 +50,7 @@ void DrawStarship() {
     RED);
 }
 
-void DrawStarship2(int posX, int posY) {
+void DrawStarship2(Vector2 pos) {
     const char *ship[] = {
         "...R.....",
         "..RRR....",
@@ -66,7 +66,7 @@ void DrawStarship2(int posX, int posY) {
     //const int startY = SCREEN_WIDTH / 2 - (rows * PIXEL_SIZE) / 2;
 
     for (int row = 0; row < rows; row++) {
-        for (int col = 0; col < cols - 1; col++) {
+        for (int col = 0; col < cols; col++) {
             Color color = BLANK;
 
             switch(ship[row][col]) {
@@ -90,8 +90,8 @@ void DrawStarship2(int posX, int posY) {
             if (color.a != 0) { // if color alpha is 0, BLANK alpha is 0
             // if (ship[row][col] != '.') {
                 DrawRectangle(
-                    posX + col * PIXEL_SIZE,
-                    posY + row * PIXEL_SIZE,
+                    pos.x + col * PIXEL_SIZE,
+                    pos.y + row * PIXEL_SIZE,
                     PIXEL_SIZE ,
                     PIXEL_SIZE,
                     color);
@@ -103,29 +103,52 @@ void DrawStarship2(int posX, int posY) {
 int main(void) {
     InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "fooling around");
 
-//    const int startX = SCREEN_WIDTH / 2 - (cols * PIXEL_SIZE) / 2;
-//    const int startY = SCREEN_WIDTH / 2 - (rows * PIXEL_SIZE) / 2;
-
     SetTargetFPS(60); // Set game to run at 60 frames-per-second
+
+    const float shipWidth = 9 * PIXEL_SIZE;
+    const float shipHeight = 7 * PIXEL_SIZE;
+
+    const float minX = 0;
+    const float minY = 0;
+    const float maxX = SCREEN_WIDTH - shipWidth;
+    const float maxY = SCREEN_HEIGHT - shipHeight;
+
+    Vector2 pos = { minX, minY };
+    Vector2 speed = { 100.0f, 0.0f };
 
     // Main game loop
     while (!WindowShouldClose()) { // Detect window close button or ESC key
-    // Update
-    //------------------------------------------------------------
-    // TODO: Update variables here
-    //------------------------------------------------------------
+        // Update
+        float dt = GetFrameTime();
 
-    // Draw
-    //------------------------------------------------------------
-    BeginDrawing();
-        ClearBackground(RAYWHITE);
+        pos.x += speed.x * dt;
+        pos.y += speed.y * dt;
 
-        // DrawStarship();
-        DrawStarship2(
-            0,
-            SCREEN_HEIGHT / 2 - (7 * PIXEL_SIZE) / 2
-        );
-    EndDrawing();
+        if (pos.x >= maxX && speed.x > 0) {
+            pos.x = maxX;
+            speed.x = 0;
+            speed.y = 100.0f;
+        } else if (pos.y >= maxY && speed.y > 0) {
+            pos.y = maxY;
+            speed.x = -100.0f;
+            speed.y = 0;
+        } else if (pos.x <= minX && speed.x < 0) {
+            pos.x = minX;
+            speed.x = 0;
+            speed.y = -100.0f;
+        } else if (pos.y <= minY && speed.y < 0) {
+            pos.y = minY;
+            speed.x = 100.0f;
+            speed.y = 0;
+        }
+
+        // Draw
+        BeginDrawing();
+            ClearBackground(RAYWHITE);
+
+            // DrawStarship();
+            DrawStarship2(pos);
+        EndDrawing();
   }
 
   // Close window and OpenGL context
