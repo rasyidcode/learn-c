@@ -55,7 +55,57 @@ void DrawStarship2(Vector2 pos) {
         "...R.....",
         "..RRR....",
         ".RRDRR...",
-        "YRDDDCBR.",
+        "YRDDDCBR",
+        ".RRDRR...",
+        "..RRR....",
+        "...R.....",
+    }; // ASCI art starship
+    const int rows = 7;
+    const int cols = 9;
+    //const int startX = SCREEN_WIDTH / 2 - (cols * PIXEL_SIZE) / 2;
+    //const int startY = SCREEN_WIDTH / 2 - (rows * PIXEL_SIZE) / 2;
+
+    for (int row = 0; row < rows; row++) {
+        for (int col = 0; col < cols; col++) {
+            Color color = BLANK;
+
+            switch(ship[row][col]) {
+                case 'R':
+                    color = RED;
+                    break;
+                case 'D':
+                    color = MAROON;
+                    break;
+                case 'C':
+                    color = SKYBLUE;
+                    break;
+                case 'B':
+                    color = BLUE;
+                    break;
+                case 'Y':
+                    color = ORANGE;
+                    break;
+            }
+
+            if (color.a != 0) { // if color alpha is 0, BLANK alpha is 0
+            // if (ship[row][col] != '.') {
+                DrawRectangle(
+                    pos.x + col * PIXEL_SIZE,
+                    pos.y + row * PIXEL_SIZE,
+                    PIXEL_SIZE ,
+                    PIXEL_SIZE,
+                    color);
+            }
+        }
+    }
+}
+
+void DrawStarship3(Vector2 pos) {
+    const char *ship[] = {
+        "...R.....",
+        "..RRR....",
+        ".RRDRR...",
+        "YRDDDCBR",
         ".RRDRR...",
         "..RRR....",
         "...R.....",
@@ -108,8 +158,8 @@ int main(void) {
     const float shipWidth = 9 * PIXEL_SIZE;
     const float shipHeight = 7 * PIXEL_SIZE;
 
-    const float minX = 0;
-    const float minY = 0;
+    const float minX = 0.0f;
+    const float minY = 0.0f;
     const float maxX = SCREEN_WIDTH - shipWidth;
     const float maxY = SCREEN_HEIGHT - shipHeight;
 
