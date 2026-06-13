@@ -12,13 +12,10 @@ int main(void) {
     float radius = 120.0f;
     float angle = 0.0f;
 
-    Vector2 startPos = { center.x, center.y };
-    Vector2 endPos = { center.x + radius, center.y };
-
-    endPos.x = center.x + cosf(0.0f) * radius;
-
     while (!WindowShouldClose()) {
         // Update
+        Vector2 startPos = { center.x, center.y };
+        Vector2 endPos = { center.x + radius, center.y };
 
         // Draw
         BeginDrawing();
