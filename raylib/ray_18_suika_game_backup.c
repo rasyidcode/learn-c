@@ -22,6 +22,7 @@ int main(void) {
     const float gravity = 500.0f;
     const float floorY = 400.0f;
 
+
     Fruit fruits[MAX_FRUITS];
     int fruitCount = 0;
 
@@ -44,8 +45,6 @@ int main(void) {
                 };
             }
         }
-
-        // circle collision resolution
 
         // update fruits
         for (int i = 0; i < fruitCount; i++) {
