@@ -1,0 +1,36 @@
+CC := gcc
+
+DEBUG_CFLAGS := -std=c99 -Wall -Wextra -pedantic -g -O0
+
+BUILD_DIR := build
+SRC ?= src/main.c
+
+ifeq ($(SRC),src/main.c)
+TARGET := $(BUILD_DIR)/dota2lock
+else
+TARGET := $(BUILD_DIR)/$(basename $(notdir $(SRC)))
+endif
+
+.PHONY: help check-src build run build-run clean
+
+help:
+	$(error Usage: make build|run|build-run SRC=filename.c)
+
+check-src:
+	@test -f "$(SRC)" || { echo "Source file not found: $(SRC)"; exit 1; }
+
+build: check-src $(TARGET)
+
+run: check-src
+	./$(TARGET)
+
+build-run: check-src $(TARGET) 
+	./$(TARGET)
+
+$(TARGET): $(SRC)
+	mkdir -p $(BUILD_DIR)
+	$(CC) $(DEBUG_CFLAGS) -o $@ $<
+
+clean:
+	rm -rf $(BUILD_DIR)
+
