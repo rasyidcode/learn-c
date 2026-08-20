@@ -1,5 +1,6 @@
 #include <stdio.h>
 
+// AI-Assisted: Gemini Web Search
 int main(void) {
     char name[100];
     int age;

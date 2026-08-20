@@ -1,5 +1,6 @@
 #include <stdio.h>
 
+// AI-Assited: Gemini Web Search
 int main(void) {
     char input[20];
     int numbers[5];
