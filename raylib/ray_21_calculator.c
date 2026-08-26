@@ -9,7 +9,9 @@ void DrawButton(const Rectangle bounds, const char *text, const Color color,
     bool hovered = CheckCollisionPointRec(mouse, bounds);
 
     DrawRectangleRec(bounds, hovered ? ColorBrightness(color, 0.2f) : color);
-    DrawRectangleLinesEx(bounds, 2, BLACK);
+
+    const Color BorderColor = ColorBrightness(color, -0.4f);
+    DrawRectangleLinesEx(bounds, 4, BorderColor);
 
     int textWidth = MeasureText(text, textSize);
 
@@ -21,30 +23,49 @@ bool IsButtonClicked(Rectangle bounds) {
     Vector2 mouse = GetMousePosition();
 
     return CheckCollisionPointRec(mouse, bounds) &&
-        IsMouseButtonPressed(MOUSE_LEFT_BUTTON);
+           IsMouseButtonPressed(MOUSE_LEFT_BUTTON);
 }
 
 int main(void) {
     InitWindow(WIDTH, HEIGHT, "Raylib Calculator");
     SetTargetFPS(60);
 
-    const int buttonWidth = 240;
-    const int buttonHeight = 90;
-    const int buttonX = WIDTH / 2.0f - buttonWidth / 2.0f;
-    const int buttonY = HEIGHT / 2.0f - buttonHeight / 2.0f;
+    const char *buttonsText[4][4] = {{"7", "8", "9", "/"},
+                                     {"4", "5", "6", "*"},
+                                     {"1", "2", "3", "-"},
+                                     {"C", "0", "=", "+"}};
+    Rectangle buttons[4][4];
 
-    Rectangle button = {buttonX, buttonY, buttonWidth, buttonHeight};
+    const float buttonWidth = 100;
+    const float buttonHeight = 100;
+    const float gap = 10;
 
-    bool clicked = false;
+    const float totalWidth = buttonWidth * 4 + gap * 3;
+    const float totalHeight = buttonHeight * 4 + gap * 3;
+    const float startX = (WIDTH - totalWidth) / 2.0f;
+    const float startY = (HEIGHT - totalHeight) / 2.0f;
 
-    const char *clickText = "Button was clicked %d times!";
-    int clickCount = 0;
+    for (int i = 0; i < 4; i++) {
+        for (int j = 0; j < 4; j++) {
+            buttons[i][j] = (Rectangle){startX + j * (buttonWidth + gap),
+                                        startY + i * (buttonHeight + gap),
+                                        buttonWidth, buttonHeight};
+        }
+    }
+
+    bool showClickText = false;
+    const char *clickedButtonText = "";
+    const char *clickInfoText = "%s was clicked";
 
     while (!WindowShouldClose()) {
         // Update
-        if (IsButtonClicked(button)) {
-            clicked = true;
-            clickCount++;
+        for (int i = 0; i < 4; i++) {
+            for (int j = 0; j < 4; j++) {
+                if (IsButtonClicked(buttons[i][j])) {
+                    clickedButtonText = buttonsText[i][j];
+                    showClickText = true;
+                }
+            }
         }
 
         // Draw
@@ -52,12 +73,25 @@ int main(void) {
         BeginDrawing();
             ClearBackground(RAYWHITE);
 
-            DrawButton(button, "Click me!", GREEN, 24, BLACK);
-            DrawButton(button, "Reset Count", BLUE, 24, BLACK);
+            for (int i = 0; i < 4; i++) {
+                 for (int j = 0; j < 4; j++) {
+                    DrawButton(
+                        buttons[i][j],
+                        buttonsText[i][j],
+                        BROWN,
+                        48,
+                        LIGHTGRAY
+                    );
+                 }      
+            }
 
-            if (clicked) {
-                DrawText(TextFormat(clickText, clickCount), (WIDTH / 2) - (MeasureText(clickText, 32) / 2),
-                    (HEIGHT / 2) - (32 / 2) + 128, 32, LIGHTGRAY);
+            if (showClickText) {
+                DrawText(TextFormat(clickInfoText, clickedButtonText),
+                    (WIDTH / 2.0f) - (MeasureText(clickInfoText, 36) / 2.0f),
+                    HEIGHT - 50.0f,
+                    36,
+                    BLACK
+                 );
             }
         EndDrawing();
         // clang-format on
