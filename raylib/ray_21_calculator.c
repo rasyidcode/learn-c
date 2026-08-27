@@ -1,4 +1,7 @@
 #include <raylib.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
 #define WIDTH 640
 #define HEIGHT 1024
@@ -24,6 +27,24 @@ bool IsButtonClicked(Rectangle bounds) {
 
     return CheckCollisionPointRec(mouse, bounds) &&
            IsMouseButtonPressed(MOUSE_LEFT_BUTTON);
+}
+
+void Calculate(double *result, double value, char operation) {
+    switch (operation) {
+    case '+':
+        *result += value;
+        break;
+    case '-':
+        *result -= value;
+        break;
+    case '*':
+        *result *= value;
+        break;
+    case '/':
+        if (value != 0)
+            *result /= value;
+        break;
+    }
 }
 
 int main(void) {
@@ -57,13 +78,42 @@ int main(void) {
     const char *clickedButtonText = "";
     const char *clickInfoText = "%s was clicked";
 
+    char input[32] = "0";
+    double result = 0;
+    char operation = '0';
+    bool newInput = true;
+
     while (!WindowShouldClose()) {
         // Update
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 4; j++) {
                 if (IsButtonClicked(buttons[i][j])) {
-                    clickedButtonText = buttonsText[i][j];
-                    showClickText = true;
+                    // clickedButtonText = buttonsText[i][j];
+                    // showClickText = true;
+
+                    const char *text = buttonsText[i][j];
+                    if (text[0] >= '0' && text[0] <= '9') {
+                        if (newInput) {
+                            strcpy(input, text);
+                            newInput = false;
+                        } else if (strlen(input) < 30) {
+                            strcat(input, text);
+                        }
+                    } else if (text[0] == 'C') {
+                        strcpy(input, "0");
+                        result = 0;
+                        operation = '0';
+                        newInput = true;
+                    } else if (text[0] == '=') {
+                        Calculate(&result, atof(input), operation);
+                        snprintf(input, sizeof(input), "%.2f", result);
+                        newInput = true;
+                    } else {
+                        // operator check
+                        result = atof(input);
+                        operation = text[0];
+                        newInput = true;
+                    }
                 }
             }
         }
@@ -85,14 +135,21 @@ int main(void) {
                  }      
             }
 
-            if (showClickText) {
-                DrawText(TextFormat(clickInfoText, clickedButtonText),
-                    (WIDTH / 2.0f) - (MeasureText(clickInfoText, 36) / 2.0f),
-                    HEIGHT - 50.0f,
-                    36,
-                    BLACK
-                 );
-            }
+            //if (showClickText) {
+            //    DrawText(TextFormat(clickInfoText, clickedButtonText),
+            //        (WIDTH / 2.0f) - (MeasureText(clickInfoText, 36) / 2.0f),
+            //        HEIGHT - 50.0f,
+            //        36,
+            //        BLACK
+            //     );
+            //}
+            DrawText(
+                input,
+                (WIDTH / 2.0f) - (MeasureText(input, 48) / 2.0f),
+                200,
+                48,
+                BLACK
+            );
         EndDrawing();
         // clang-format on
     }
